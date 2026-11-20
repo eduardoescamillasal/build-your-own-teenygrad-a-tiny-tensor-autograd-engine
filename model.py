@@ -11,8 +11,9 @@ import math
 def prod(shape):
     return math.prod(shape)
 
-# Step 2 - argsort (not yet solved)
-# TODO: implement
+# Step 2 - argsort
+def argsort(values):
+    return [i for i, _ in sorted(enumerate(values), key=lambda pair: pair[1])]
 
 # Step 3 - make_op_enums (not yet solved)
 # TODO: implement
