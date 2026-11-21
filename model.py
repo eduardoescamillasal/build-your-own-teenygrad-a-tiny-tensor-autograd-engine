@@ -512,8 +512,21 @@ def bind_unary_tensor_methods():
         'sigmoid': lambda t: Sigmoid.apply(t)
     }
 
-# Step 41 - broadcasted (not yet solved)
-# TODO: implement
+# Step 41 - broadcasted
+def broadcasted(x, y):
+    shape = np.broadcast_shapes(x.shape, y.shape)
+
+    if x.shape != shape:
+        x = tensor_from_data(
+            np.array(np.broadcast_to(x.data._np, shape), dtype=np.float32)
+        )
+    
+    if y.shape != shape:
+        y = tensor_from_data(
+            np.array(np.broadcast_to(y.data._np, shape), dtype=np.float32)
+        )
+    
+    return x, y
 
 # Step 42 - bind_binary_tensor_methods (not yet solved)
 # TODO: implement
