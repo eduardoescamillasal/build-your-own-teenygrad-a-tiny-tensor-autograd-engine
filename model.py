@@ -336,8 +336,21 @@ class Max(Function):
         self.ret = LazyBuffer(out)
         return self.ret
 
-# Step 29 - max_function_backward (not yet solved)
-# TODO: implement
+# Step 29 - max_function_backward
+def backward(self, grad_output):
+    _, BinaryOps, ReduceOps, _ = make_op_enums()
+    shape = self.x._np.shape
+    ret_exp = expand(self.ret, shape)
+    ones = LazyBuffer.const(1.0, shape)
+    lt_max = lazybuffer_binary_e(self.x, BinaryOps.CMPLT, ret_exp)
+    is_max = lazybuffer_binary_e(ones, BinaryOps.SUB, lt_max)
+    cnts_max = expand(r(is_max, ReduceOps.SUM, self.axis), shape)
+    division = lazybuffer_binary_e(is_max, BinaryOps.DIV, cnts_max)
+    grad_expand = expand(grad_output, shape)
+    return lazybuffer_binary_e(division, BinaryOps.MUL, grad_expand)
+
+
+Max.backward = backward
 
 # Step 30 - Reshape (not yet solved)
 # TODO: implement
