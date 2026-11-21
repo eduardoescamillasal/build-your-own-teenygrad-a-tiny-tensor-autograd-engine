@@ -55,8 +55,12 @@ class LazyBuffer:
         self.shape = np_array.shape
         self.dtype = np_array.dtype
 
-# Step 5 - lazybuffer_const (not yet solved)
-# TODO: implement
+# Step 5 - lazybuffer_const
+import numpy as np
+def const(value, shape):
+    arr = np.full(shape, value, dtype=np.float32)
+    return LazyBuffer(arr)
+LazyBuffer.const = staticmethod(const)
 
 # Step 6 - rand (not yet solved)
 # TODO: implement
