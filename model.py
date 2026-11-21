@@ -501,8 +501,16 @@ def tensor_backward(tensor):
                 )
     return None
 
-# Step 40 - bind_unary_tensor_methods (not yet solved)
-# TODO: implement
+# Step 40 - bind_unary_tensor_methods
+def bind_unary_tensor_methods():
+    return {
+        'neg': lambda t: Neg.apply(t),
+        'relu': lambda t: Relu.apply(t),
+        'log': lambda t: Log.apply(t),
+        'exp': lambda t: Exp.apply(t),
+        'sqrt': lambda t: Sqrt.apply(t),
+        'sigmoid': lambda t: Sigmoid.apply(t)
+    }
 
 # Step 41 - broadcasted (not yet solved)
 # TODO: implement
