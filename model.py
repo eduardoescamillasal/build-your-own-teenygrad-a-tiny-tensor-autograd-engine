@@ -460,8 +460,21 @@ def tensor_randn(shape, seed=None, requires_grad=False):
         requires_grad=requires_grad
     )
 
-# Step 38 - build_topological_order (not yet solved)
-# TODO: implement
+# Step 38 - build_topological_order
+def build_topological_order(tensor):
+    # TODO: DFS over each node's _ctx.parents, append a node after its parents
+    order = []
+    visited = set()
+    
+    def dfs(node):
+        visited.add(id(node))
+        if node._ctx is not None:
+            for p in node._ctx.parents:
+                if id(p) not in visited:
+                    dfs(p)
+        order.append(node)
+    dfs(tensor)
+    return order
 
 # Step 39 - tensor_backward (not yet solved)
 # TODO: implement
