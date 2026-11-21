@@ -64,7 +64,6 @@ LazyBuffer.const = staticmethod(const)
 
 # Step 6 - rand
 def rand(shape, seed=None):
-    # TODO: return a LazyBuffer of uniform random floats in [0, 1) with given shape
     rng = np.random.RandomState(seed)
     data = rng.random(shape).astype(np.float32)
     return LazyBuffer(data)
