@@ -323,7 +323,9 @@ class Sum(Function):
 
 # Step 27 - sum_function_backward
 def backward(self, grad_output):
-    return expand(grad_output, self.input_shape)
+    view = np.broadcast_to(grad_output._np, self.input_shape)
+    return LazyBuffer(np.ascontiguousarray(view))
+    # return expand(grad_output, self.input_shape)
 
 # Step 28 - max_function_forward (not yet solved)
 # TODO: implement
