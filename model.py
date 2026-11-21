@@ -146,8 +146,20 @@ def permute(self, order):
     axes = tuple(int(axis) for axis in order)
     return LazyBuffer(x.transpose(axes))
 
-# Step 13 - Function (not yet solved)
-# TODO: implement
+# Step 13 - Function
+class Function:
+    def __init__(self, *tensors):
+        self.needs_input_grad = [t.requires_grad for t in tensors]
+
+        if any(flag is True for flag in self.needs_input_grad):
+            self.requires_grad = True
+        elif None in self.needs_input_grad:
+            self.requires_grad = None
+        else:
+            self.requires_grad = False
+        
+        if self.requires_grad:
+            self.parents = tensors
 
 # Step 14 - function_forward_backward_stubs (not yet solved)
 # TODO: implement
