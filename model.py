@@ -224,8 +224,15 @@ class Log(Function):
         mask = lazybuffer_binary_e(one, BinaryOps.DIV, self.x)
         return lazybuffer_binary_e(mask, BinaryOps.MUL, grad_output)
 
-# Step 19 - Exp (not yet solved)
-# TODO: implement
+# Step 19 - Exp
+UnaryOps, BinaryOps, _, _ = make_op_enums()
+class Exp(Function):
+    def forward(self, x):
+        self.ret = x.e(UnaryOps.EXP)
+        return self.ret
+
+    def backward(self, grad_output):
+        return lazybuffer_binary_e(self.ret, BinaryOps.MUL, grad_output)
 
 # Step 20 - Sqrt (not yet solved)
 # TODO: implement
