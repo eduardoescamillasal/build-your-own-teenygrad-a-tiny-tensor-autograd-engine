@@ -56,7 +56,6 @@ class LazyBuffer:
         self.dtype = np_array.dtype
 
 # Step 5 - lazybuffer_const
-import numpy as np
 def const(value, shape):
     arr = np.full(shape, value, dtype=np.float32)
     return LazyBuffer(arr)
