@@ -15,8 +15,36 @@ def prod(shape):
 def argsort(values):
     return [i for i, _ in sorted(enumerate(values), key=lambda pair: pair[1])]
 
-# Step 3 - make_op_enums (not yet solved)
-# TODO: implement
+# Step 3 - make_op_enums
+from enum import Enum, auto
+
+def make_op_enums():
+    class UnaryOps(Enum):
+        NEG = auto()
+        RELU = auto()
+        LOG = auto()
+        EXP = auto()
+        SQRT = auto()
+        SIGMOID = auto()
+    
+    class BinaryOps(Enum):
+        ADD = auto()
+        SUB = auto()
+        MUL = auto()
+        DIV = auto()
+        CMPLT = auto()
+        MAX = auto()
+
+    class ReduceOps(Enum):
+        SUM = auto()
+        MAX = auto()
+
+    class MovementOps(Enum):
+        RESHAPE = auto()
+        EXPAND = auto()
+        PERMUTE = auto()
+
+    return (UnaryOps, BinaryOps, ReduceOps, MovementOps)
 
 # Step 4 - LazyBuffer (not yet solved)
 # TODO: implement
