@@ -446,8 +446,19 @@ def tensor_creation_helpers():
 
     return (zeros_fn, ones_fn, full_fn)
 
-# Step 37 - tensor_randn (not yet solved)
-# TODO: implement
+# Step 37 - tensor_randn
+def tensor_randn(shape, seed=None, requires_grad=False):
+    shape = tuple(shape)
+    u = rand((2, *shape), seed)._np
+    u1 = np.clip(u[0], 1e-12, 1.0)
+    u2 = u[1]
+
+    z = np.sqrt(-2.0 * np.log(u1)) * np.cos(2.0 * np.pi * u2)
+
+    return Tensor(
+        LazyBuffer(z.astype(np.float32)),
+        requires_grad=requires_grad
+    )
 
 # Step 38 - build_topological_order (not yet solved)
 # TODO: implement
