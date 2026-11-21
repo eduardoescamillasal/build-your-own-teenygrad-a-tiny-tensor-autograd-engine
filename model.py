@@ -247,8 +247,19 @@ class Sqrt(Function):
         denom = lazybuffer_binary_e(self.ret, BinaryOps.MUL, two)
         return lazybuffer_binary_e(grad_output, BinaryOps.DIV, denom)
 
-# Step 21 - Sigmoid (not yet solved)
-# TODO: implement
+# Step 21 - Sigmoid
+UnaryOps, BinaryOps, _, _ = make_op_enums()
+
+class Sigmoid(Function):
+    def forward(self, x):
+        self.ret = x.e(UnaryOps.SIGMOID)
+        return self.ret
+
+    def backward(self, grad_output):
+        one = LazyBuffer.const(1, self.ret._np.shape)
+        one_minus_sig = lazybuffer_binary_e(one, BinaryOps.SUB, self.ret)
+        dx = lazybuffer_binary_e(self.ret, BinaryOps.MUL, one_minus_sig)
+        return lazybuffer_binary_e(dx, BinaryOps.MUL, grad_output)
 
 # Step 22 - Add (not yet solved)
 # TODO: implement
