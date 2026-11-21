@@ -91,8 +91,28 @@ def e(self, op, *srcs):
 
 LazyBuffer.e = e
 
-# Step 8 - lazybuffer_binary_e (not yet solved)
-# TODO: implement
+# Step 8 - lazybuffer_binary_e
+def lazybuffer_binary_e(self, op, other):
+    x = self._np
+    y = other._np
+    name = op.name
+
+    if name == "ADD":
+        out = x + y
+    elif name == "SUB":
+        out = x - y
+    elif name == "MUL":
+        out = x * y
+    elif name == "DIV":
+        out = x / y
+    elif name == "CMPLT":
+        out = (x < y).astype(np.float32)
+    elif name == "MAX":
+        out = np.maximum(x, y)
+    else:
+        raise ValueError(f"Unsupported binary op: {op}")
+    
+    return LazyBuffer(out)
 
 # Step 9 - lazybuffer_r (not yet solved)
 # TODO: implement
