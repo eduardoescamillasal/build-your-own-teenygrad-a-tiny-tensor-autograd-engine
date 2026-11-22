@@ -760,8 +760,17 @@ class MLP:
     def parameters(self):
         return self.l1.parameters() + self.l2.parameters()
 
-# Step 53 - sgd_step (not yet solved)
-# TODO: implement
+# Step 53 - sgd_step
+def sgd_step(parameters, learning_rate):
+    for p in parameters:
+        if p.grad is None:
+            continue
+        
+        weights = p.data._np
+        gradients = p.grad.data._np
+
+        updated = weights - learning_rate * gradients
+        p.data = LazyBuffer(updated.astype(np.float32))
 
 # Step 54 - zero_grad (not yet solved)
 # TODO: implement
