@@ -632,8 +632,21 @@ def tensor_mean(x, axis=None, keepdim=False):
     
     return x.sum(axis=axis, keepdim=keepdim) / tensor_from_data(float(n))
 
-# Step 46 - tensor_transpose (not yet solved)
-# TODO: implement
+# Step 46 - tensor_transpose
+def tensor_transpose(x, ax1=-2, ax2=-1):
+    n = len(x.shape)
+
+    ax1 = ax1 % n 
+    ax2 = ax2 % n 
+    
+    order = list(range(n))
+    order[ax1], order[ax2] = order[ax2], order[ax1] 
+
+    if not hasattr(Tensor, "permute"):
+        for name, method in bind_movement_tensor_methods.items():
+            setattr(Tensor, name, method)
+
+    return x.permute(tuple(order))
 
 # Step 47 - tensor_matmul_2d (not yet solved)
 # TODO: implement
