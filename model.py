@@ -804,8 +804,56 @@ def accuracy(logits, labels):
     preds = np.argmax(arr, axis=-1)
     return float(np.mean(preds == labels))
 
-# Step 57 - train_mlp (not yet solved)
-# TODO: implement
+# Step 57 - train_mlp
+def train_mlp(X, y, hidden=16, epochs=100, learning_rate=0.1, seed=0):
+    X = np.asarray(X, dtype=np.float32)
+    y = np.asarray(y, dtype=int).reshape(-1)
+
+    N, n_features = X.shape
+    n_classes = int(y.max()) + 1
+
+    model = MLP(n_features, hidden, n_classes, seed=seed)
+    losses = []
+
+    W1, b1, W2, b2 = model.parameters()
+
+    for _ in range(epochs):
+        z1 = X @ W1.data._np + b1.data._np
+        h = np.maximum(z1, 0)
+        logits = h @ W2.data._np + b2.data._np
+
+        loss = sparse_categorical_cross_entropy(
+            tensor_from_data(logits), y
+        )
+        losses.append(float(loss.numpy()))
+
+        shifted = logits - logits.max(axis=1, keepdims=True)
+        exp = np.exp(shifted)
+        probs = exp / exp.sum(axis=1, keepdims=True)
+
+       
+        dlogits = probs.copy()
+        dlogits[np.arange(N), y] -= 1
+        dlogits /= N
+
+        dW2 = h.T @ dlogits
+        db2 = dlogits.sum(axis=0)
+
+        dh = dlogits @ W2.data._np.T
+        dz1 = dh * (z1 > 0)
+
+        dW1 = X.T @ dz1
+        db1 = dz1.sum(axis=0)
+
+        for p, grad in zip(
+            model.parameters(),
+            [dW1, db1, dW2, db2]
+        ):
+            p.grad = tensor_from_data(grad)
+
+        sgd_step(model.parameters(), learning_rate)
+
+    return model, losses
 
 # Step 58 - evaluate_mlp (not yet solved)
 # TODO: implement
