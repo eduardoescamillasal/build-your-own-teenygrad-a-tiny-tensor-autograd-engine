@@ -702,8 +702,19 @@ def tensor_log_softmax(x, axis=-1):
     result.lazydata = LazyBuffer(result.numpy().astype(np.float64))
     return result
 
-# Step 50 - sparse_categorical_cross_entropy (not yet solved)
-# TODO: implement
+# Step 50 - sparse_categorical_cross_entropy
+def sparse_categorical_cross_entropy(logits, labels):
+    if not isinstance(logits, Tensor):
+        logits = tensor_from_data(logits)
+    log_probs = tensor_log_softmax(logits, axis=-1)
+    lp = log_probs.numpy().astype(np.float64)
+
+    labels = np.asarray(labels).astype(int).reshape(-1)
+    N = lp.shape[0]
+
+    correct = lp[np.arange(N), labels]
+    loss = -correct.mean()
+    return tensor_from_data(float(loss))
 
 # Step 51 - Linear (not yet solved)
 # TODO: implement
