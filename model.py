@@ -618,8 +618,19 @@ def bind_reduce_tensor_methods():
     Tensor.sum = sum_method
     Tensor.max = max_method
 
-# Step 45 - tensor_mean (not yet solved)
-# TODO: implement
+# Step 45 - tensor_mean
+def tensor_mean(x, axis=None, keepdim=False):
+    bind_reduce_tensor_methods()
+    bind_binary_tensor_methods()
+    
+    if axis is None:
+        n = prod(x.shape)
+    elif isinstance(axis, int):
+        n = x.shape[axis]
+    else:
+        n = prod(x.shape[a] for a in axis)
+    
+    return x.sum(axis=axis, keepdim=keepdim) / tensor_from_data(float(n))
 
 # Step 46 - tensor_transpose (not yet solved)
 # TODO: implement
