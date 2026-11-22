@@ -672,8 +672,18 @@ def tensor_matmul_2d(a, b):
 
     return prod.sum(axis=1)
 
-# Step 48 - tensor_softmax (not yet solved)
-# TODO: implement
+# Step 48 - tensor_softmax
+def tensor_softmax(x, axis=-1):
+    bind_reduce_tensor_methods()
+    bind_binary_tensor_methods()
+
+    for name, method in bind_unary_tensor_methods().items():
+        setattr(Tensor, name, method)
+
+    max_val = x.max(axis=axis, keepdim=True)
+    exps = (x - max_val).exp()
+
+    return exps / exps.sum(axis=axis, keepdim=True)
 
 # Step 49 - tensor_log_softmax (not yet solved)
 # TODO: implement
