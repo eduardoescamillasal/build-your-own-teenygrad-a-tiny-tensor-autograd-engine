@@ -648,8 +648,29 @@ def tensor_transpose(x, ax1=-2, ax2=-1):
 
     return x.permute(tuple(order))
 
-# Step 47 - tensor_matmul_2d (not yet solved)
-# TODO: implement
+# Step 47 - tensor_matmul_2d
+def tensor_matmul_2d(a, b):
+    m, k = a.shape
+    k2, n = b.shape
+
+    if k != k2:
+        raise ValueError("Incompatible matrix dimensions")
+
+    bind_reduce_tensor_methods()
+    bind_binary_tensor_methods()
+    
+    for name, method in bind_movement_tensor_methods().items():
+        setattr(Tensor, name, method)
+    
+    a3 = a.reshape((m, k, 1))
+    b3 = b.reshape((1, k, n))
+
+    a3 = a3.expand((m, k, n))
+    b3 = b3.expand((m, k, n))
+
+    prod = a3 * b3
+
+    return prod.sum(axis=1)
 
 # Step 48 - tensor_softmax (not yet solved)
 # TODO: implement
